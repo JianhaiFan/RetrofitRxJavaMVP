@@ -4,11 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.xiaofan.retrofitrxjavamvp.application.App;
+import com.xiaofan.retrofitrxjavamvp.download.DaoMaster;
+import com.xiaofan.retrofitrxjavamvp.download.DaoSession;
 import com.xiaofan.retrofitrxjavamvp.download.DownInfo;
 import com.xiaofan.retrofitrxjavamvp.download.DownInfoDao;
 import com.xiaofan.retrofitrxjavamvp.download.HttpDownManager;
-import com.xiaofan.retrofitrxjavamvp.http.cookie.DaoMaster;
-import com.xiaofan.retrofitrxjavamvp.http.cookie.DaoSession;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
