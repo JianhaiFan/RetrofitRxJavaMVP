@@ -46,4 +46,6 @@ dependencies {
     /*注解*/
     compile 'com.jakewharton:butterknife:latest.integration'
     compile 'com.jakewharton:butterknife-compiler:latest.integration'
+
+    compile 'com.google.code.gson:gson:2.2.1'
 }

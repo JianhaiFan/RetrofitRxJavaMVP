@@ -1,6 +1,7 @@
 package com.xiaofan.retrofitrxjavamvp.entity.api;
 
 
+import com.google.gson.annotations.Expose;
 import com.xiaofan.retrofitrxjavamvp.http.service.HttpPostService;
 
 import retrofit2.Retrofit;
@@ -15,7 +16,10 @@ import rx.Observable;
  */
 public class SubjectPostApi extends BaseApi {
     //    接口需要传入的参数 可自定义不同类型
+    @Expose
     private boolean all;
+    @Expose
+    private String test;
     /*任何你想要传递的参数*/
 //    String xxxxx;
 //    String xxxxx;
@@ -35,6 +39,13 @@ public class SubjectPostApi extends BaseApi {
 //        setMethod("fan_cache");
     }
 
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
 
     public boolean isAll() {
         return all;
@@ -50,4 +61,12 @@ public class SubjectPostApi extends BaseApi {
         return httpService.getAllVedioBy(isAll());
     }
 
+    @Override
+    public String toString() {
+        super.toString();
+        return "SubjectPostApi{" +
+                "all=" + all +
+                ", test='" + test + '\'' +
+                '}';
+    }
 }
