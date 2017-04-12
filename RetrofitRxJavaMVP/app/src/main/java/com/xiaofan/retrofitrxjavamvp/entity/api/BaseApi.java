@@ -1,5 +1,7 @@
 package com.xiaofan.retrofitrxjavamvp.entity.api;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSONObject;
 import com.xiaofan.retrofitrxjavamvp.entity.resulte.BaseResultEntity;
 import com.xiaofan.retrofitrxjavamvp.exception.HttpTimeException;
@@ -106,10 +108,13 @@ public abstract class BaseApi<T> implements Func1<T, String> {
 
     @Override
     public String call(T httpResult) {
+        Log.e("fanjianhai","httpResult:" + httpResult);
         BaseResultEntity baseResulte= JSONObject.parseObject(httpResult.toString(),BaseResultEntity.class);
         if (baseResulte.getRet() == 0) {
             throw new HttpTimeException(baseResulte.getMsg());
         }
-        return baseResulte.getData();
+
+//        return baseResulte.getData();
+        return "123";
     }
 }

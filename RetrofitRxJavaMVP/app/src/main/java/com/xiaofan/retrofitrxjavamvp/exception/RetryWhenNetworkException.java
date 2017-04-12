@@ -61,6 +61,7 @@ public class RetryWhenNetworkException implements Func1<Observable<? extends Thr
                             return Observable.timer(delay + (wrapper.index - 1) * increaseDelay, TimeUnit.MILLISECONDS);
 
                         }
+                        Log.e("fanjianhai","RetryWhenNetworkException throwable: " + wrapper.throwable.toString());
                         return Observable.error(wrapper.throwable);
                     }
                 });

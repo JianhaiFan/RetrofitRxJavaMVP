@@ -8,6 +8,7 @@ import com.xiaofan.retrofitrxjavamvp.entity.api.BaseApi;
 import com.xiaofan.retrofitrxjavamvp.exception.AccessDenyException;
 import com.xiaofan.retrofitrxjavamvp.exception.FactoryException;
 import com.xiaofan.retrofitrxjavamvp.exception.RetryWhenNetworkException;
+import com.xiaofan.retrofitrxjavamvp.http.cookie.TokenInterceptor;
 import com.xiaofan.retrofitrxjavamvp.listener.HttpOnNextListener;
 import com.xiaofan.retrofitrxjavamvp.subscribers.ProgressSubscriber;
 
@@ -71,7 +72,8 @@ public class HttpManager {
     public void doHttpDeal(BaseApi basePar) {
         //手动创建一个OkHttpClient并设置超时时间缓存等设置
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(basePar.getConnectionTime(), TimeUnit.SECONDS);
+        builder.connectTimeout(basePar.getConnectionTime(), TimeUnit.SECONDS)
+                .addInterceptor(new TokenInterceptor());
 
 
         /*创建retrofit对象*/
@@ -85,10 +87,11 @@ public class HttpManager {
         ProgressSubscriber subscriber = new ProgressSubscriber(basePar, onNextListener);
 
         Observable observable = basePar.getObservable(retrofit);
+        //TODO 重新连接
         /*失败后的retry配置*/
         observable.retryWhen(new RetryWhenNetworkException())
                 /*异常处理*/
-                .onErrorResumeNext(refreshTokenAndRetry(observable))
+//        observable.onErrorResumeNext(refreshTokenAndRetry(observable))
                 /*生命周期管理*/
 //                .compose(appCompatActivity.get().bindToLifecycle())
                 .compose(appCompatActivity.get().bindUntilEvent(ActivityEvent.DESTROY))
@@ -112,18 +115,21 @@ public class HttpManager {
         return new Func1<Throwable, Observable<? extends T>>() {
             @Override
             public Observable<? extends T> call(Throwable throwable) {
-                Log.e("fanjianhai","refreshTokenAndRetry:---");
+                Log.e("fanjianhai","HttpManager refreshTokenAndRetry");
                 // Here check if the error thrown really is a 401
-                if (isHttp401Error(throwable)) {
+//                if (isHttp401Error(throwable)) {
                     return createTokenObvervable().flatMap(new Func1<String, Observable<? extends T>>() {
                         @Override
                         public Observable<? extends T> call(String token) {
+                            Log.e("fanjianhai","获取最新的Token值：" + token);
+
                             return toBeResumed;
                         }
                     });
-                }
-                // re-throw this error because it's not recoverable from here
-                return Observable.error(FactoryException.analysisExcetpion(throwable));
+//                }
+//                Log.e("fanjianhai","HttpManager refreshTokenAndRetry error! -- " + throwable.toString());
+//                return Observable.error(FactoryException.analysisExcetpion(throwable));//                // re-throw this error because it's not recoverable from here
+
             }
 
             public boolean isHttp401Error(Throwable throwable) {
@@ -138,11 +144,12 @@ public class HttpManager {
             @Override
             public void call(Subscriber<? super String> observer) {
                 try {
-                    if (!observer.isUnsubscribed()) {
+//                    if (!observer.isUnsubscribed()) {
                         //TODO 填写请求回来的Token值
+                        Log.e("fanjianhai","HttpManager createTokenObvervable call!");
                         observer.onNext("最新的Token：" + "");
                         observer.onCompleted();
-                    }
+//                    }
                 } catch (Exception e) {
                     observer.onError(e);
                 }

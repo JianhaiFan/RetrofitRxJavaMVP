@@ -1,5 +1,6 @@
 package com.xiaofan.retrofitrxjavamvp.http.service;
 
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -23,5 +24,9 @@ public interface HttpPostService {
 //        1 = {HashMap$HashMapEntry@830049680216} "type" -> "5006"
 //        2 = {HashMap$HashMapEntry@830049680184} "userLoginId" -> "83112345678"
 //        {"status":"2","msg":"该手机号已被注册"}
+
+    @FormUrlEncoded
+    @POST("AppFiftyToneGraph/videoLink")
+    Call<String> getToken(@Field("username")String username, @Field("password")String password);
 
 }

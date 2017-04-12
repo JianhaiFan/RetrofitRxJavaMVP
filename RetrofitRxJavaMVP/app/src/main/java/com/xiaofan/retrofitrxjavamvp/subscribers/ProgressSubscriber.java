@@ -13,6 +13,7 @@ import com.xiaofan.retrofitrxjavamvp.utils.AppUtil;
 import com.xiaofan.retrofitrxjavamvp.utils.CookieDbUtil;
 
 import java.lang.ref.SoftReference;
+import java.net.SocketTimeoutException;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -49,7 +50,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
      */
     @Override
     public void onStart() {
-        Log.e("fanjianhai","onStart...");
+        Log.e("fanjianhai","ProgressSubscriber onStart...");
         /*缓存并且有网*/
         if (api.isCache() && AppUtil.isNetworkAvailable(App.app)) {
              /*获取缓存数据*/
@@ -70,7 +71,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
 
     @Override
     public void onCompleted() {
-        Log.e("fanjianhai","onCompleted...");
+        Log.e("fanjianhai","ProgressSubscriber onCompleted...");
     }
 
     /**
@@ -81,7 +82,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
      */
     @Override
     public void onError(Throwable e) {
-        Log.e("fanjianhai","onError...");
+        Log.e("fanjianhai","ProgressSubscriber onError...");
         /*需要緩存并且本地有缓存才返回*/
         if (api.isCache()) {
             getCache();
@@ -132,7 +133,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
      * @param e
      */
     private void errorDo(Throwable e) {
-        Log.e("fanjianhai","StackTrace:" + e.toString());
+        Log.e("fanjianhai","ProgressSubscriber errorDo:" + e.toString());
         HttpOnNextListener httpOnNextListener = mSubscriberOnNextListener.get();
         if (httpOnNextListener == null) return;
         if (e instanceof ApiException) {
@@ -145,7 +146,6 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
         }
     }
 
-
     /**
      * 将onNext方法中的返回结果交给Activity或Fragment自己处理
      *
@@ -153,7 +153,10 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
      */
     @Override
     public void onNext(T t) {
-        Log.e("fanjianhai","onNext... \nt: "+ t.toString());
+        Log.e("fanjianhai","ProgressSubscriber： " + t.toString());
+        if ("123".equals(t.toString())) {
+            onError(new Throwable());
+        }
          /*缓存处理*/
         if (api.isCache()) {
             CookieResulte resulte = CookieDbUtil.getInstance().queryCookieBy(api.getUrl());
@@ -168,6 +171,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
                 CookieDbUtil.getInstance().updateCookie(resulte);
             }
         }
+
         if (mSubscriberOnNextListener.get() != null) {
             mSubscriberOnNextListener.get().onNext((String) t, api.getMethod());
         }

@@ -7,13 +7,8 @@ package com.xiaofan.retrofitrxjavamvp.exception;
  * @description: Token
  * @changed by:
  */
-public class AccessDenyException extends ApiException {
-
-    public AccessDenyException(Throwable e) {
-        super(e);
-    }
-
-    public AccessDenyException(Throwable cause, @CodeException.CodeEp int code, String showMsg) {
-        super(cause, code, showMsg);
+public class AccessDenyException extends Exception {
+    public AccessDenyException(String message) {
+        super(message);
     }
 }
