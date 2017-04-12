@@ -90,6 +90,7 @@ public class MvpActivity extends BaseActivity implements Vlistener {
 
     @Override
     public void onTestNext(String msg) {
+        Log.e("fanjianhai","msg: " + msg);
         tvTest.setText("返回测试结果:" + msg);
     }
 
@@ -106,6 +107,7 @@ public class MvpActivity extends BaseActivity implements Vlistener {
 
     @Override
     public void onNext(String s, String m) {
+        Log.e("fanjianhai","s: " + s);
         tvMsg.setText("method: " + m + ",结果消息：" + s);
     }
 

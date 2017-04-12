@@ -1,5 +1,7 @@
 package com.xiaofan.retrofitrxjavamvp.subscribers;
 
+import android.util.Log;
+
 import com.xiaofan.retrofitrxjavamvp.application.App;
 import com.xiaofan.retrofitrxjavamvp.entity.api.BaseApi;
 import com.xiaofan.retrofitrxjavamvp.exception.ApiException;
@@ -47,6 +49,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
      */
     @Override
     public void onStart() {
+        Log.e("fanjianhai","onStart...");
         /*缓存并且有网*/
         if (api.isCache() && AppUtil.isNetworkAvailable(App.app)) {
              /*获取缓存数据*/
@@ -67,7 +70,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
 
     @Override
     public void onCompleted() {
-
+        Log.e("fanjianhai","onCompleted...");
     }
 
     /**
@@ -78,6 +81,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
      */
     @Override
     public void onError(Throwable e) {
+        Log.e("fanjianhai","onError...");
         /*需要緩存并且本地有缓存才返回*/
         if (api.isCache()) {
             getCache();
@@ -128,6 +132,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
      * @param e
      */
     private void errorDo(Throwable e) {
+        Log.e("fanjianhai","StackTrace:" + e.toString());
         HttpOnNextListener httpOnNextListener = mSubscriberOnNextListener.get();
         if (httpOnNextListener == null) return;
         if (e instanceof ApiException) {
@@ -148,6 +153,7 @@ public class ProgressSubscriber<T> extends Subscriber<T> implements Subscription
      */
     @Override
     public void onNext(T t) {
+        Log.e("fanjianhai","onNext... \nt: "+ t.toString());
          /*缓存处理*/
         if (api.isCache()) {
             CookieResulte resulte = CookieDbUtil.getInstance().queryCookieBy(api.getUrl());

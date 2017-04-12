@@ -26,9 +26,11 @@ public class CodeException {
     public static final int RUNTIME_ERROR = 0x5;
     /*无法解析该域名*/
     public static final int UNKOWNHOST_ERROR = 0x6;
+    /* TOKEN失效 */
+    public static final int ACCESSDENYEXCEPTION = 0X7;
 
 
-    @IntDef({NETWORK_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UNKOWNHOST_ERROR})
+    @IntDef({NETWORK_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UNKOWNHOST_ERROR,ACCESSDENYEXCEPTION})
     @Retention(RetentionPolicy.SOURCE)
     public @interface CodeEp {
     }

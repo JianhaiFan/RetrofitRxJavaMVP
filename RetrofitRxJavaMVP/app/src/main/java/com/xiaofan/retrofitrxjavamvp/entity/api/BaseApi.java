@@ -33,15 +33,8 @@ public abstract class BaseApi<T> implements Func1<T, String> {
     /*无网络的情况下本地缓存时间默认30天*/
     private int cookieNoNetWorkTime=24*60*60*30;
 
-    /**
-     * 设置参数
-     *
-     * @param retrofit
-     * @return
-     */
+
     public abstract Observable getObservable(Retrofit retrofit);
-
-
 
     public int getCookieNoNetWorkTime() {
         return cookieNoNetWorkTime;

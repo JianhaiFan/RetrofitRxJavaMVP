@@ -1,5 +1,7 @@
 package com.xiaofan.retrofitrxjavamvp.exception;
 
+import android.util.Log;
+
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeUnit;
@@ -41,6 +43,7 @@ public class RetryWhenNetworkException implements Func1<Observable<? extends Thr
 
     @Override
     public Observable<?> call(Observable<? extends Throwable> observable) {
+        Log.e("fanjianhai","RetryWhenNetworkException -- call");
         return observable
                 .zipWith(Observable.range(1, count + 1), new Func2<Throwable, Integer, Wrapper>() {
                     @Override
